@@ -13,11 +13,12 @@ class Question < ModelBase
     QuestionLike.most_liked_questions(n)
   end
 
-  attr_accessor :id, :title, :body, :author_id
+  attr_accessor :title, :body, :author_id
 
   def initialize(opts={})
     opts = opts[0] if opts.is_a?(Array)
-    @id, @title, @body, @author_id = opts.values_at('id', 'title', 'body', 'author_id')
+    super(opts['id'])
+    @title, @body, @author_id = opts.values_at('title', 'body', 'author_id')
   end
 
   def author

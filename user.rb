@@ -5,23 +5,16 @@ class User < ModelBase
   DATABASE_NAME = "users"
 
   def self.find_by_name(fname, lname)
-    result = QuestionsDatabase.instance.execute(<<-SQL, fname, lname)
-      SELECT
-        *
-      FROM
-        users
-      WHERE
-        fname = ? AND lname = ?
-    SQL
-
-    User.new(result)
+    options = {"fname" => fname, "lname" => lname}
+    self.where(options)
   end
 
-  attr_accessor :id, :fname, :lname
+  attr_accessor :fname, :lname
 
   def initialize(opts={})
     opts = opts[0] if opts.is_a?(Array)
-    @id, @fname, @lname = opts.values_at('id','fname', 'lname')
+    super(opts['id'])
+    @fname, @lname = opts.values_at('fname', 'lname')
   end
 
   def authored_questions
@@ -56,27 +49,5 @@ class User < ModelBase
 
     result[0].values[0]
   end
-  #
-  # def save
-  #   params = [fname, lname]
-  #
-  #   if id.nil?
-  #     QuestionsDatabase.instance.execute(<<-SQL, *params)
-  #       INSERT INTO
-  #         users (fname, lname)
-  #       VALUES
-  #         (?, ?)
-  #       SQL
-  #
-  #     self.id = QuestionsDatabase.instance.last_insert_row_id
-  #   else
-  #     QuestionsDatabase.instance.execute(<<-SQL, *params)
-  #       UPDATE
-  #         users (fname, lname)
-  #       VALUES
-  #         (?, ?)
-  #       SQL
-  #   end
-  # end
 
 end

@@ -4,13 +4,13 @@ class Reply < ModelBase
 
   DATABASE_NAME = "replies"
 
-
-  attr_accessor :id, :question_id, :parent_reply_id, :user_id, :body
+  attr_accessor :question_id, :parent_reply_id, :user_id, :body
 
   def initialize(opts={})
     opts = opts[0] if opts.is_a?(Array)
-    @id, @question_id, @parent_reply_id, @user_id, @body =
-      opts.values_at('id', 'question_id', 'parent_reply_id', 'user_id', 'body')
+    super(opts['id'])
+    @question_id, @parent_reply_id, @user_id, @body =
+      opts.values_at('question_id', 'parent_reply_id', 'user_id', 'body')
   end
 
   def author
@@ -37,6 +37,5 @@ class Reply < ModelBase
 
     results.map {|result| Reply.new(result)}
   end
-
 
 end

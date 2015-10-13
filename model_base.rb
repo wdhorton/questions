@@ -1,10 +1,10 @@
 class ModelBase
+  attr_reader :id
 
   def self.all
     results = QuestionsDatabase.instance.execute("SELECT * FROM #{self::DATABASE_NAME}")
     results.map { |result| self.new(result) }
   end
-
 
   def self.database_name
     if self == Reply
@@ -47,22 +47,33 @@ class ModelBase
     end
   end
 
+  def initialize(id)
+    @id = id
+  end
 
+  def save
+    params, attributes = params_and_attr
+
+    if id.nil?
+      create(params,attributes)
+    else
+      update(params,attributes)
+    end
+  end
+
+  private
 
   def create(params,attributes)
-
     QuestionsDatabase.instance.execute(<<-SQL, *params)
       INSERT INTO
         #{self.class::DATABASE_NAME} (#{attributes.join(', ')})
       VALUES
-        (#{question_marks})
+        (#{question_marks(params.length)})
       SQL
 
-    self.id = QuestionsDatabase.instance.last_insert_row_id
+    @id = QuestionsDatabase.instance.last_insert_row_id
     puts "Saved!"
-
   end
-
 
   def update(params,attributes)
     attributes.delete('id')
@@ -77,9 +88,7 @@ class ModelBase
         id = ?
       SQL
     puts "Updated!"
-
   end
-
 
   def question_marks(n)
     question_marks = []
@@ -97,16 +106,6 @@ class ModelBase
       params << self.send(name.to_sym)
     end
     [params,attributes]
-  end
-
-  def save
-    params, attributes = params_and_attr
-
-    if id.nil?
-      create(params,attributes)
-    else
-      update(params,attributes)
-    end
   end
 
 end
