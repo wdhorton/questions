@@ -43,12 +43,8 @@ class QuestionLike
         question_likes
       ON
         question_likes.question_id = questions.id
-      JOIN
-        users
-      ON
-        question_likes.liker_id = users.id
       WHERE
-        users.id = ?
+        question_likes.liker_id = ?
     SQL
 
     results.map {|result| Question.new(result)}

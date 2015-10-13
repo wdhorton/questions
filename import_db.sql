@@ -57,7 +57,8 @@ INSERT INTO
   question_follows (follower_id, question_id)
 VALUES
   ((SELECT id FROM users WHERE lname = 'Horton'), (SELECT id FROM questions WHERE title = 'Mets')),
-  ((SELECT id FROM users WHERE lname = 'Horton'), (SELECT id FROM questions WHERE title = 'Suitcase'));
+  ((SELECT id FROM users WHERE lname = 'Horton'), (SELECT id FROM questions WHERE title = 'Suitcase')),
+  ((SELECT id FROM users WHERE lname = 'Samson'), (SELECT id FROM questions WHERE title = 'App Academy'));
 
 INSERT INTO
   replies (question_id, user_id, body)
@@ -66,7 +67,13 @@ VALUES
 ((SELECT id FROM questions WHERE title = 'Mets'), (SELECT id FROM users WHERE lname = 'Romano'), 'I know');
 
 INSERT INTO
+  replies (question_id, user_id, body, parent_reply_id)
+VALUES
+((SELECT id FROM questions WHERE title = 'Mets'), (SELECT id FROM users WHERE lname = 'Samson'), 'They suck', (SELECT id FROM replies WHERE body = 'They are really good'));
+
+INSERT INTO
   question_likes (liker_id, question_id)
 VALUES
   ((SELECT id FROM users WHERE lname = 'Romano'), (SELECT id FROM questions WHERE title = 'App Academy')),
-  ((SELECT id FROM users WHERE lname = 'Samson'), (SELECT id FROM questions WHERE title = 'App Academy'));
+  ((SELECT id FROM users WHERE lname = 'Samson'), (SELECT id FROM questions WHERE title = 'App Academy')),
+  ((SELECT id FROM users WHERE lname = 'Horton'), (SELECT id FROM questions WHERE title = 'Mets'));

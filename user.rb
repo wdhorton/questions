@@ -1,16 +1,8 @@
 require_relative 'model_base'
 
 class User < ModelBase
-  #
-  # def self.all
-  #   results = QuestionsDatabase.instance.execute('SELECT * FROM users')
-  #   results.map { |result| User.new(result) }
-  # end
-  #
-  # def self.find_by_id(id)
-  #   result = QuestionsDatabase.instance.execute('SELECT * FROM users WHERE id = ?', id)
-  #   User.new(result)
-  # end
+
+  DATABASE_NAME = "users"
 
   def self.find_by_name(fname, lname)
     result = QuestionsDatabase.instance.execute(<<-SQL, fname, lname)
@@ -21,6 +13,7 @@ class User < ModelBase
       WHERE
         fname = ? AND lname = ?
     SQL
+
     User.new(result)
   end
 
