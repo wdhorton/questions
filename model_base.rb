@@ -5,10 +5,10 @@ class ModelBase
     results.map { |result| self.new(result) }
   end
 
-  def self.find_by_id(id)
-    result = QuestionsDatabase.instance.execute("SELECT * FROM #{self.database_name} WHERE id = ?", id)
-    self.new(result)
-  end
+  # def self.find_by_id(id)
+  #   result = QuestionsDatabase.instance.execute("SELECT * FROM #{self.database_name} WHERE id = ?", id)
+  #   self.new(result)
+  # end
 
   def self.database_name
     if self == Reply
@@ -33,7 +33,8 @@ class ModelBase
       WHERE
         #{where_exp}
     SQL
-    results.map { |result| self.new(result) }
+    results.map! { |result| self.new(result) }
+    results.length == 1 ? results[0] : results
   end
 
   def self.method_missing(method, *args)

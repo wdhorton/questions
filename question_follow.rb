@@ -43,9 +43,9 @@ class QuestionFollow
       JOIN
         question_follows
       ON
-        question.id = question_follows.question_id
+        questions.id = question_follows.question_id
       GROUP BY
-        question.id
+        questions.id
       ORDER BY
         COUNT(*) DESC
       LIMIT ?

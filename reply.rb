@@ -38,14 +38,15 @@ class Reply < ModelBase
 
 
 
-  attr_accessor :id, :question_id, :parent_reply_id, :author_id, :body
+  attr_accessor :id, :question_id, :parent_reply_id, :user_id, :body
 
   def initialize(opts={})
-    @id, @question_id, @parent_reply_id, @author_id, @body = opts.values_at('id', 'question_id', 'parent_reply_id', 'author_id', 'body')
+    opts = opts[0] if opts.is_a?(Array)
+    @id, @question_id, @parent_reply_id, @user_id, @body = opts.values_at('id', 'question_id', 'parent_reply_id', 'user_id', 'body')
   end
 
   def author
-    Author.find_by_id(author_id)
+    User.find_by_id(user_id)
   end
 
   def question
@@ -53,7 +54,7 @@ class Reply < ModelBase
   end
 
   def parent_reply
-    Reply.find_by_id(parent_reply_id)
+    Reply.find_by_id(parent_reply_id) if parent_reply_id
   end
 
   def child_replies

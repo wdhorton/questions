@@ -1,33 +1,34 @@
 require_relative 'model_base'
 
 class User < ModelBase
-  # 
+  #
   # def self.all
   #   results = QuestionsDatabase.instance.execute('SELECT * FROM users')
   #   results.map { |result| User.new(result) }
   # end
-
+  #
   # def self.find_by_id(id)
   #   result = QuestionsDatabase.instance.execute('SELECT * FROM users WHERE id = ?', id)
   #   User.new(result)
   # end
-  #
-  # def self.find_by_name(fname, lname)
-  #   result = QuestionsDatabase.instance.execute(<<-SQL, fname, lname)
-  #     SELECT
-  #       *
-  #     FROM
-  #       users
-  #     WHERE
-  #       fname = ? AND lname = ?
-  #   SQL
-  #   User.new(result)
-  # end
+
+  def self.find_by_name(fname, lname)
+    result = QuestionsDatabase.instance.execute(<<-SQL, fname, lname)
+      SELECT
+        *
+      FROM
+        users
+      WHERE
+        fname = ? AND lname = ?
+    SQL
+    User.new(result)
+  end
 
   attr_accessor :id, :fname, :lname
 
   def initialize(opts={})
-    @id, @fname, @lname = opts.values_at('id', 'fname','lname')
+    opts = opts[0] if opts.is_a?(Array)
+    @id, @fname, @lname = opts.values_at('id','fname', 'lname')
   end
 
   def authored_questions
@@ -39,7 +40,7 @@ class User < ModelBase
   end
 
   def followed_questions
-    QuestionFollow.followers_for_question_id(id)
+    QuestionFollow.followed_questions_for_user_id(id)
   end
 
   def liked_questions
@@ -59,6 +60,8 @@ class User < ModelBase
       WHERE
         questions.author_id = ?
       SQL
+
+    result[0].values[0]
   end
   #
   # def save

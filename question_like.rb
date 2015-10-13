@@ -26,10 +26,11 @@ class QuestionLike
       JOIN
         question_likes
       ON
-        question.id = question_likes.question_id
+        questions.id = question_likes.question_id
       WHERE
-        question.id = ?
+        questions.id = ?
     SQL
+    result[0]["COUNT(*)"]
   end
 
   def self.liked_questions_for_user_id(user_id)
@@ -62,9 +63,9 @@ class QuestionLike
       JOIN
         question_likes
       ON
-        question.id = question_likes.question_id
+        questions.id = question_likes.question_id
       GROUP BY
-        question.id
+        questions.id
       ORDER BY
         COUNT(*) DESC
       LIMIT ?

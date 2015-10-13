@@ -35,11 +35,12 @@ class Question < ModelBase
   attr_accessor :id, :title, :body, :author_id
 
   def initialize(opts={})
+    opts = opts[0] if opts.is_a?(Array)
     @id, @title, @body, @author_id = opts.values_at('id', 'title', 'body', 'author_id')
   end
 
   def author
-      Author.find_by_id(author_id)
+      User.find_by_id(author_id)
 
   end
 

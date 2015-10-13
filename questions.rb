@@ -5,7 +5,6 @@ require_relative 'question'
 require_relative 'question_follow'
 require_relative 'reply'
 require_relative 'question_like'
-require 'pluralize'
 
 class QuestionsDatabase < SQLite3::Database
 
